@@ -1,0 +1,14 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: {{ .Release.Name }}-test
+  annotations:
+    "helm.sh/hook": test
+spec:
+  template:
+    spec:
+      containers:
+      - command: ["wget", "-O-", "http://{{ include "helm-demo.fullname" . }}/"]
+        image: busybox:1.28.1
+        name: {{ .Release.Name }}-test
+      restartPolicy: Never
